@@ -11,8 +11,8 @@ import circleFrag from './circleFrag.glsl';
 
 console.log(circleVert, circleFrag);
 
-d3.csv(`dataset_stats.csv`).then(datasets => {
-  d3.csv(`links.csv`).then(links => {
+d3.csv(`${process.env.PUBLIC_URL}/dataset_stats.csv`).then(datasets => {
+  d3.csv(`${process.env.PUBLIC_URL}/links.csv`).then(links => {
     console.log('datasets are ', datasets);
     console.log('links are ', links[0]);
     let nodes = datasets.map((a, i) => {
