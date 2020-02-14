@@ -9,7 +9,7 @@
     "regl": "^1.3.13",
     "regl-tween": "^1.1.2"
   },
-  "homepage": "http://stuartlynn.github.io/MetaDataVisualisation",
+  "homepage": "https://stuartlynn.github.io/MetaDataVisualisation",
   "scripts": {
     "start": "parcel index.html",
     "build": "parcel build index.html --public-url /MetaDataVisualisation",
