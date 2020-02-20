@@ -5,13 +5,6 @@ import circleVert from './circleVert.glsl';
 import circleFrag from './circleFrag.glsl';
 import colorKey from './color_key.json';
 
-//import data from './dataset_stats.csv';
-
-//import Papa from 'pappaparse';
-//let d = Papa.parse(data, {header: true});
-
-console.log(circleVert, circleFrag);
-
 let wx = 0;
 let wy = 0;
 
@@ -44,7 +37,7 @@ function setSelected(selected) {
   }
 }
 
-const BASE_URL = process.env.PUBLIC_URL ? process.env.PUBLIC_URL : '';
+const BASE_URL = window.location.href; //process.env.PUBLIC_URL ? process.env.PUBLIC_URL : '';
 
 d3.csv(`${BASE_URL}/dataset_stats.csv`).then(datasets => {
   d3.csv(`${BASE_URL}/links.csv`).then(links => {
@@ -101,7 +94,6 @@ d3.csv(`${BASE_URL}/dataset_stats.csv`).then(datasets => {
       } else {
         keyDiv.innerHTML = '';
       }
-      console.log('Key string ', keyString);
     };
 
     let showColor = false;
