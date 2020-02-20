@@ -39348,7 +39348,7 @@ function setSelected(selected) {
 
   if (selected) {
     console.log(selected);
-    var selectedTemplate = " \n      <h1>Selection</h1>'';\n      <p> name: ".concat(selected.name, " </p>\n      <p> agency: ").concat(selected.agency, " </p>\n      <p> downloads: ").concat(selected.downloads, " </p>\n      <p> views: ").concat(selected.page_views, " </p>\n    ");
+    var selectedTemplate = " \n      <h1>Selection</h1>\n      <p> name: ".concat(selected.name, " </p>\n      <p> agency: ").concat(selected.agency, " </p>\n      <p> downloads: ").concat(selected.downloads, " </p>\n      <p> views: ").concat(selected.page_views, " </p>\n    ");
     selectedDiv.innerHTML = selectedTemplate;
   } else {
     selectedDiv.innerHTML = '';
@@ -39358,7 +39358,6 @@ function setSelected(selected) {
 var BASE_URL = undefined ? undefined : '';
 d3.csv("".concat(BASE_URL, "/dataset_stats.csv")).then(function (datasets) {
   d3.csv("".concat(BASE_URL, "/links.csv")).then(function (links) {
-    console.log('datasets ', datasets);
     var nodes = datasets.map(function (a, i) {
       var angle = Math.random() * 2.0 * Math.PI;
       return _objectSpread({}, a, {
@@ -39404,9 +39403,9 @@ d3.csv("".concat(BASE_URL, "/dataset_stats.csv")).then(function (datasets) {
     };
 
     var showColor = false;
-    var linkForce = d3.forceLink(links);
+    var linkForce = d3.forceLink([]);
     var chargeForce = d3.forceManyBody().strength(-20);
-    var simulation = d3.forceSimulation(nodes).velocityDecay(0.2).force('x', d3.forceX().strength(0.04)).force('y', d3.forceY().strength(0.04)).force('collide', d3.forceCollide().strength(1).iterations(1).radius(function (d) {
+    var simulation = d3.forceSimulation(nodes).velocityDecay(0.2).force('x', d3.forceX().strength(0.04)).force('y', d3.forceY().strength(0.04)).force('link', linkForce).force('collide', d3.forceCollide().strength(1).iterations(1).radius(function (d) {
       return d.r;
     })).stop();
     var regl = (0, _regl.default)({
@@ -39501,12 +39500,12 @@ d3.csv("".concat(BASE_URL, "/dataset_stats.csv")).then(function (datasets) {
     document.addEventListener('keypress', function (e) {
       if (e.key === 'l') {
         simulation.force('charge', chargeForce);
-        simulation.force('link', linkForce);
+        simulation.force('link').links(links);
         simulation.alpha(0.4);
       }
 
       if (e.key === 'k') {
-        simulation.force('link', null);
+        simulation.force('link').links([]);
         simulation.force('charge', null);
         simulation.alpha(0.4);
       }
@@ -39562,7 +39561,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "41943" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34259" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
