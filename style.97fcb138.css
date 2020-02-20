@@ -1,0 +1,67 @@
+html,
+body {
+  margin: 0px;
+  padding: 0px;
+  width: 1vw;
+  height: 1vh;
+  font-family: "Lato", sans-serif;
+  font-size: 13px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Lato", sans-serif;
+}
+
+.key {
+  position: absolute;
+  height: 100vh;
+  width: 400px;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 2;
+  color: white;
+  font-size: 1rem;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.entries {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 10px;
+}
+
+.entry {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#selected {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  height: 20vh;
+  width: 400px;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 2;
+  color: white;
+  font-size: 1rem;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.circle {
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  margin-right: 10px;
+}
+
+/*# sourceMappingURL=/style.97fcb138.css.map */
