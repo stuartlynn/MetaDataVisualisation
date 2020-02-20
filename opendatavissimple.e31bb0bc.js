@@ -39257,6 +39257,39 @@ void main() {
 			gl_FragColor = color;
 }
 `
+},{}],"color_key.json":[function(require,module,exports) {
+module.exports = {
+  "Department of Education (DOE)": [0.5529411764705883, 0.8274509803921568, 0.7803921568627451],
+  "Department of Information Technology & Telecommunications (DoITT)": [1.0, 1.0, 0.7019607843137254],
+  "Department of Parks and Recreation (DPR)": [0.7450980392156863, 0.7294117647058823, 0.8549019607843137],
+  "Department of Transportation (DOT)": [0.984313725490196, 0.5019607843137255, 0.4470588235294118],
+  "Department of Finance (DOF)": [0.5019607843137255, 0.6941176470588235, 0.8274509803921568],
+  "Department of City Planning (DCP)": [0.9921568627450981, 0.7058823529411765, 0.3843137254901961],
+  "Taxi and Limousine Commission (TLC)": [0.7019607843137254, 0.8705882352941177, 0.4117647058823529],
+  "Department for the Aging (DFTA)": [0.9882352941176471, 0.803921568627451, 0.8980392156862745],
+  "Mayor's Office of Operations (OPS)": [0.8509803921568627, 0.8509803921568627, 0.8509803921568627],
+  "Department of Health and Mental Hygiene (DOHMH)": [0.7372549019607844, 0.5019607843137255, 0.7411764705882353],
+  "Department of Youth and Community Development (DYCD)": [0.8, 0.9215686274509803, 0.7725490196078432],
+  "Other": [1.0, 0.9294117647058824, 0.43529411764705883],
+  "Department of Probation (DOP)": [0.5529411764705883, 0.8274509803921568, 0.7803921568627451],
+  "School Construction Authority (SCA)": [1.0, 1.0, 0.7019607843137254],
+  "Human Resources Administration (HRA)": [0.7450980392156863, 0.7294117647058823, 0.8549019607843137],
+  "Department of Sanitation (DSNY)": [0.984313725490196, 0.5019607843137255, 0.4470588235294118],
+  "Department of Housing Preservation and Development (HPD)": [0.5019607843137255, 0.6941176470588235, 0.8274509803921568],
+  "Mayor's Office of Sustainability (MOS)": [0.9921568627450981, 0.7058823529411765, 0.3843137254901961],
+  "Department of Small Business Services (SBS)": [0.7019607843137254, 0.8705882352941177, 0.4117647058823529],
+  "Department of Citywide Administrative Services (DCAS)": [0.9882352941176471, 0.803921568627451, 0.8980392156862745],
+  "Department of Environmental Protection (DEP)": [0.8509803921568627, 0.8509803921568627, 0.8509803921568627],
+  "New York City Housing Authority (NYCHA)": [0.7372549019607844, 0.5019607843137255, 0.7411764705882353],
+  "Mayor's Office of Contract Services (MOCS)": [0.8, 0.9215686274509803, 0.7725490196078432],
+  "Mayor's Office of Management & Budget (OMB)": [1.0, 0.9294117647058824, 0.43529411764705883],
+  "Mayor's Office for Economic Opportunity": [0.5529411764705883, 0.8274509803921568, 0.7803921568627451],
+  "Police Department (NYPD)": [1.0, 1.0, 0.7019607843137254],
+  "Department of Buildings (DOB)": [0.7450980392156863, 0.7294117647058823, 0.8549019607843137],
+  "Department of Consumer Affairs (DCA)": [0.984313725490196, 0.5019607843137255, 0.4470588235294118],
+  "Department of Homeless Services (DHS)": [0.5019607843137255, 0.6941176470588235, 0.8274509803921568],
+  "311": [0.9921568627450981, 0.7058823529411765, 0.3843137254901961]
+};
 },{}],"index.js":[function(require,module,exports) {
 "use strict";
 
@@ -39270,17 +39303,13 @@ var _circleVert = _interopRequireDefault(require("./circleVert.glsl"));
 
 var _circleFrag = _interopRequireDefault(require("./circleFrag.glsl"));
 
+var _color_key = _interopRequireDefault(require("./color_key.json"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
@@ -39290,24 +39319,49 @@ function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //import data from './dataset_stats.csv';
 //import Papa from 'pappaparse';
 //let d = Papa.parse(data, {header: true});
 console.log(_circleVert.default, _circleFrag.default);
-var x = 0;
-var y = 0;
-document.addEventListener('mousemove', function (e) {
-  x = e.pageX;
-  y = e.pageY;
-  console.log("".concat(x, " ").concat(y));
-});
-d3.csv("".concat("https://stuartlynn.github.io/MetaDataVisualisation/", "/dataset_stats.csv")).then(function (datasets) {
-  d3.csv("".concat("https://stuartlynn.github.io/MetaDataVisualisation/", "/links.csv")).then(function (links) {
-    console.log('datasets are ', datasets);
-    console.log('links are ', links[0]);
+var wx = 0;
+var wy = 0;
+var selectedID = null;
+
+function findNearest(x, y, nodes, width, height) {
+  var xx = x * width;
+  var yy = y * height;
+  console.log('xx ', xx, ' yy ', yy, ' x ', x, ' y ', y);
+  var hits = nodes.filter(function (n) {
+    return (n.x - xx) * (n.x - xx) + (n.y - yy) * (n.y - yy) < n.r * n.r;
+  });
+  return hits;
+}
+
+function setSelected(selected) {
+  var selectedDiv = document.getElementById('selected');
+
+  if (selected) {
+    console.log(selected);
+    var selectedTemplate = " \n      <h1>Selection</h1>'';\n      <p> name: ".concat(selected.name, " </p>\n      <p> agency: ").concat(selected.agency, " </p>\n      <p> downloads: ").concat(selected.downloads, " </p>\n      <p> views: ").concat(selected.page_views, " </p>\n    ");
+    selectedDiv.innerHTML = selectedTemplate;
+  } else {
+    selectedDiv.innerHTML = '';
+  }
+}
+
+var BASE_URL = undefined ? undefined : '';
+d3.csv("".concat(BASE_URL, "/dataset_stats.csv")).then(function (datasets) {
+  d3.csv("".concat(BASE_URL, "/links.csv")).then(function (links) {
+    console.log('datasets ', datasets);
     var nodes = datasets.map(function (a, i) {
       var angle = Math.random() * 2.0 * Math.PI;
-      return {
+      return _objectSpread({}, a, {
         x: Math.cos(angle) * (window.innerWidth + 500 * i),
         // (Math.random() - 0.5) * 20,
         y: Math.sin(angle) * (window.innerWidth + 500 * i),
@@ -39316,8 +39370,40 @@ d3.csv("".concat("https://stuartlynn.github.io/MetaDataVisualisation/", "/datase
         color: [parseFloat(a.r), parseFloat(a.g), parseFloat(a.b), 1],
         //.0Math.random(), Math.random(), Math.random(), 1],
         id: i
-      };
+      });
     });
+    document.addEventListener('mousemove', function (e) {
+      wx = (e.pageX / window.innerWidth - 0.5) * 2;
+      wy = -1.0 * (e.pageY / window.innerHeight - 0.5) * 2;
+      var near = findNearest(wx, wy, nodes, window.innerWidth, window.innerHeight);
+
+      if (near.length > 0) {
+        console.log('near ', near[0].id);
+        selectedID = near[0].id;
+        setSelected(near[0]);
+      } else {
+        setSelected(null);
+        selectedID = null;
+      }
+    });
+
+    var setColorLegend = function setColorLegend() {
+      var keyDiv = document.getElementById('color-key');
+
+      if (showColor) {
+        var _keyString = "\n            <h1>Departments</h1>\n            <div class='entries'>\n                ".concat(Object.entries(_color_key.default).map(function (a) {
+          return "<div class='entry'><div class='circle' style='background-color:rgb(".concat(a[1][0] * 255, ", ").concat(a[1][1] * 255, ", ").concat(a[1][2] * 255, ")'> </div> <p>").concat(a[0], "</p></div>");
+        }).join('\n'), "\n            </div>\n                ");
+
+        keyDiv.innerHTML = _keyString;
+      } else {
+        keyDiv.innerHTML = '';
+      }
+
+      console.log('Key string ', keyString);
+    };
+
+    var showColor = false;
     var linkForce = d3.forceLink(links);
     var chargeForce = d3.forceManyBody().strength(-20);
     var simulation = d3.forceSimulation(nodes).velocityDecay(0.2).force('x', d3.forceX().strength(0.04)).force('y', d3.forceY().strength(0.04)).force('collide', d3.forceCollide().strength(1).iterations(1).radius(function (d) {
@@ -39343,7 +39429,6 @@ d3.csv("".concat("https://stuartlynn.github.io/MetaDataVisualisation/", "/datase
       })));
       var range = v === 'd' ? [2, 40] : [2, 200];
       var scale = d3.scaleSqrt().domain([min, max]).range(range);
-      window.scale = scale;
       nodes = nodes.map(function (n, i) {
         return _objectSpread({}, n, {
           r: v ? scale(parseFloat(datasets[i][v])) : 10
@@ -39371,13 +39456,29 @@ d3.csv("".concat("https://stuartlynn.github.io/MetaDataVisualisation/", "/datase
         pointWidth: radiusBuffer,
         nodeColor: function nodeColor(context, props) {
           return props.nodes.map(function (e) {
-            return e.color;
+            return showColor ? e.color : [0.8, 0.8, 0.8, 1.0];
           });
         }
       },
       count: function count(context, props) {
         return props.nodes.length;
       },
+      primitive: 'points'
+    });
+    var drawPointer = regl({
+      vert: _circleVert.default,
+      frag: _circleFrag.default,
+      depth: {
+        enable: false
+      },
+      attributes: {
+        position: function position(context, props) {
+          return [[props.x, props.y]];
+        },
+        pointWidth: [50],
+        nodeColor: [[1.0, 0.0, 0.0, 1.0]]
+      },
+      count: 1,
       primitive: 'points'
     });
     regl.frame(function (_ref) {
@@ -39387,12 +39488,15 @@ d3.csv("".concat("https://stuartlynn.github.io/MetaDataVisualisation/", "/datase
         color: [0, 0, 0, 1],
         depth: 1
       });
-      console.log(window.innerWidth, window.innerHeight);
       drawParticles({
         nodes: _toConsumableArray(simulation.nodes()),
         width: window.innerWidth,
         height: window.innerHeight
       });
+      /*drawPointer({
+        x: wx,
+        y: wy,
+                });*/
     });
     document.addEventListener('keypress', function (e) {
       if (e.key === 'l') {
@@ -39415,6 +39519,11 @@ d3.csv("".concat("https://stuartlynn.github.io/MetaDataVisualisation/", "/datase
         setSizeVar('downloads');
       }
 
+      if (e.key === 'c') {
+        showColor = !showColor;
+        setColorLegend();
+      }
+
       if (e.key === 'j') {
         setSizeVar('d');
       }
@@ -39425,7 +39534,7 @@ d3.csv("".concat("https://stuartlynn.github.io/MetaDataVisualisation/", "/datase
     });
   });
 });
-},{"d3":"node_modules/d3/index.js","regl":"node_modules/regl/dist/regl.js","regl-tween":"node_modules/regl-tween/index.js","./circleVert.glsl":"circleVert.glsl","./circleFrag.glsl":"circleFrag.glsl"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"d3":"node_modules/d3/index.js","regl":"node_modules/regl/dist/regl.js","regl-tween":"node_modules/regl-tween/index.js","./circleVert.glsl":"circleVert.glsl","./circleFrag.glsl":"circleFrag.glsl","./color_key.json":"color_key.json"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -39453,7 +39562,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33149" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "41943" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
