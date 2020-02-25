@@ -4,6 +4,7 @@ import tween from "regl-tween";
 import circleVert from "./circleVert.glsl";
 import circleFrag from "./circleFrag.glsl";
 import colorKey from "./color_key.json";
+//import reglline2d from "regl-line2d";
 
 //import data from './dataset_stats.csv';
 
@@ -42,8 +43,8 @@ function setSelected(selected) {
 
 const BASE_URL = process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "";
 
-d3.csv(`${BASE_URL}/dataset_stats.csv`).then(datasets => {
-    d3.csv(`${BASE_URL}/links.csv`).then(links => {
+d3.csv(`${BASE_URL}dataset_stats.csv`).then(datasets => {
+    d3.csv(`${BASE_URL}links.csv`).then(links => {
         console.log("datasets ", datasets);
         var nodes = datasets.map((a, i) => {
             const angle = Math.random() * 2.0 * Math.PI;
@@ -152,9 +153,10 @@ d3.csv(`${BASE_URL}/dataset_stats.csv`).then(datasets => {
             .stop();
 
         let regl = createREGL({
-            extensions: ["OES_standard_derivatives"]
+            extensions: ["OES_standard_derivatives", "ANGLE_instanced_arrays"]
         });
         let twee = tween(regl);
+        //const line2d = reglline2d(regl);
 
         let radiusBuffer = twee.buffer(nodes.map(n => n.r), {
             duration: 1000,
@@ -223,6 +225,7 @@ d3.csv(`${BASE_URL}/dataset_stats.csv`).then(datasets => {
                 width: window.innerWidth,
                 height: window.innerHeight
             });
+
             /*drawPointer({
         x: wx,
         y: wy,
