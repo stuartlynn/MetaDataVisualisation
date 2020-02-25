@@ -39259,36 +39259,36 @@ void main() {
 `
 },{}],"color_key.json":[function(require,module,exports) {
 module.exports = {
-  "Department of Education (DOE)": [0.5529411764705883, 0.8274509803921568, 0.7803921568627451],
-  "Department of Information Technology & Telecommunications (DoITT)": [1.0, 1.0, 0.7019607843137254],
-  "Department of Parks and Recreation (DPR)": [0.7450980392156863, 0.7294117647058823, 0.8549019607843137],
-  "Department of Transportation (DOT)": [0.984313725490196, 0.5019607843137255, 0.4470588235294118],
-  "Department of Finance (DOF)": [0.5019607843137255, 0.6941176470588235, 0.8274509803921568],
-  "Department of City Planning (DCP)": [0.9921568627450981, 0.7058823529411765, 0.3843137254901961],
-  "Taxi and Limousine Commission (TLC)": [0.7019607843137254, 0.8705882352941177, 0.4117647058823529],
-  "Department for the Aging (DFTA)": [0.9882352941176471, 0.803921568627451, 0.8980392156862745],
-  "Mayor's Office of Operations (OPS)": [0.8509803921568627, 0.8509803921568627, 0.8509803921568627],
-  "Department of Health and Mental Hygiene (DOHMH)": [0.7372549019607844, 0.5019607843137255, 0.7411764705882353],
-  "Department of Youth and Community Development (DYCD)": [0.8, 0.9215686274509803, 0.7725490196078432],
-  "Other": [1.0, 0.9294117647058824, 0.43529411764705883],
-  "Department of Probation (DOP)": [0.5529411764705883, 0.8274509803921568, 0.7803921568627451],
-  "School Construction Authority (SCA)": [1.0, 1.0, 0.7019607843137254],
-  "Human Resources Administration (HRA)": [0.7450980392156863, 0.7294117647058823, 0.8549019607843137],
-  "Department of Sanitation (DSNY)": [0.984313725490196, 0.5019607843137255, 0.4470588235294118],
-  "Department of Housing Preservation and Development (HPD)": [0.5019607843137255, 0.6941176470588235, 0.8274509803921568],
-  "Mayor's Office of Sustainability (MOS)": [0.9921568627450981, 0.7058823529411765, 0.3843137254901961],
-  "Department of Small Business Services (SBS)": [0.7019607843137254, 0.8705882352941177, 0.4117647058823529],
-  "Department of Citywide Administrative Services (DCAS)": [0.9882352941176471, 0.803921568627451, 0.8980392156862745],
-  "Department of Environmental Protection (DEP)": [0.8509803921568627, 0.8509803921568627, 0.8509803921568627],
-  "New York City Housing Authority (NYCHA)": [0.7372549019607844, 0.5019607843137255, 0.7411764705882353],
-  "Mayor's Office of Contract Services (MOCS)": [0.8, 0.9215686274509803, 0.7725490196078432],
-  "Mayor's Office of Management & Budget (OMB)": [1.0, 0.9294117647058824, 0.43529411764705883],
-  "Mayor's Office for Economic Opportunity": [0.5529411764705883, 0.8274509803921568, 0.7803921568627451],
-  "Police Department (NYPD)": [1.0, 1.0, 0.7019607843137254],
-  "Department of Buildings (DOB)": [0.7450980392156863, 0.7294117647058823, 0.8549019607843137],
-  "Department of Consumer Affairs (DCA)": [0.984313725490196, 0.5019607843137255, 0.4470588235294118],
-  "Department of Homeless Services (DHS)": [0.5019607843137255, 0.6941176470588235, 0.8274509803921568],
-  "311": [0.9921568627450981, 0.7058823529411765, 0.3843137254901961]
+  "Department of Education (DOE)": [0.9677975592919913, 0.44127456009157356, 0.5358103155058701],
+  "Department of Information Technology & Telecommunications (DoITT)": [0.9694979754285514, 0.4537284387051496, 0.40783466214891867],
+  "Department of Parks and Recreation (DPR)": [0.9542900080364486, 0.4779505175890752, 0.1963917622115608],
+  "Department of Transportation (DOT)": [0.8616090647292522, 0.536495730113334, 0.19548899031476086],
+  "Department of Finance (DOF)": [0.7930046244373694, 0.5708100522446624, 0.19489531984381053],
+  "Department of City Planning (DCP)": [0.7350228985632719, 0.5952719904750953, 0.1944419133847522],
+  "Taxi and Limousine Commission (TLC)": [0.6804189127793346, 0.6151497514677574, 0.19405452111445337],
+  "Department for the Aging (DFTA)": [0.6234809659087222, 0.6330654918766613, 0.19369052933737949],
+  "Mayor's Office of Operations (OPS)": [0.5571803870240879, 0.6507747739933957, 0.19331667588333168],
+  "Department of Health and Mental Hygiene (DOHMH)": [0.46810256823426116, 0.6699492535792404, 0.19289587399044988],
+  "Department of Youth and Community Development (DYCD)": [0.3126890019504329, 0.6928754610296064, 0.1923704830330379],
+  "Other": [0.19645998900718342, 0.6974309119838096, 0.3614680088321782],
+  "Department of Probation (DOP)": [0.20125317221201128, 0.6907920815379025, 0.47966761189275336],
+  "School Construction Authority (SCA)": [0.2047934223695329, 0.6857201900461317, 0.5491539606228022],
+  "Human Resources Administration (HRA)": [0.20774052347943134, 0.6813852191365138, 0.6002900398972028],
+  "Department of Sanitation (DSNY)": [0.21044753832183283, 0.6773105080456748, 0.6433941168468681],
+  "Department of Housing Preservation and Development (HPD)": [0.21316806282417172, 0.6731234926210208, 0.6838056741516414],
+  "Mayor's Office of Sustainability (MOS)": [0.2161609050020783, 0.6684079809438751, 0.7255515774097884],
+  "Department of Small Business Services (SBS)": [0.21979956608283252, 0.6625157876850336, 0.7732093159317208],
+  "Department of Citywide Administrative Services (DCAS)": [0.22480301438618688, 0.6541170341314059, 0.8343335482693295],
+  "Department of Environmental Protection (DEP)": [0.23299120924703914, 0.639586552066035, 0.9260706093977744],
+  "New York City Housing Authority (NYCHA)": [0.43328034117642245, 0.6065273407962816, 0.9585467098271748],
+  "Mayor's Office of Contract Services (MOCS)": [0.5830408541921136, 0.5695319215803094, 0.9583591966369759],
+  "Mayor's Office of Management & Budget (OMB)": [0.6968456641452155, 0.5283777451706791, 0.9581680759272918],
+  "Mayor's Office for Economic Opportunity": [0.8004936186423958, 0.47703363533737203, 0.9579547196007522],
+  "Police Department (NYPD)": [0.9082572436765556, 0.40195790729656516, 0.9576909250290225],
+  "Department of Buildings (DOB)": [0.959647907830888, 0.3748291312853892, 0.893004453766301],
+  "Department of Consumer Affairs (DCA)": [0.962272393509669, 0.3976451968965351, 0.8008274363432775],
+  "Department of Homeless Services (DHS)": [0.9642903119819891, 0.41420146582831974, 0.7188681186026104],
+  "311": [0.9660237860697111, 0.42783187979900156, 0.636998264206457]
 };
 },{}],"index.js":[function(require,module,exports) {
 "use strict";
@@ -39325,6 +39325,9 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//import data from './dataset_stats.csv';
+//import Papa from 'pappaparse';
+//let d = Papa.parse(data, {header: true});
 var wx = 0;
 var wy = 0;
 var selectedID = null;
@@ -39332,7 +39335,6 @@ var selectedID = null;
 function findNearest(x, y, nodes, width, height) {
   var xx = x * width;
   var yy = y * height;
-  console.log('xx ', xx, ' yy ', yy, ' x ', x, ' y ', y);
   var hits = nodes.filter(function (n) {
     return (n.x - xx) * (n.x - xx) + (n.y - yy) * (n.y - yy) < n.r * n.r;
   });
@@ -39340,21 +39342,20 @@ function findNearest(x, y, nodes, width, height) {
 }
 
 function setSelected(selected) {
-  var selectedDiv = document.getElementById('selected');
+  var selectedDiv = document.getElementById("selected");
 
   if (selected) {
-    console.log(selected);
-    var selectedTemplate = " \n      <h1>Selection</h1>\n      <p> name: ".concat(selected.name, " </p>\n      <p> agency: ").concat(selected.agency, " </p>\n      <p> downloads: ").concat(selected.downloads, " </p>\n      <p> views: ").concat(selected.page_views, " </p>\n    ");
+    var selectedTemplate = " \n      <h1>Selection</h1>\n      <p> name: ".concat(selected.name, " </p>\n      <p> agency: ").concat(selected.agency, " </p>\n      <p> downloads: ").concat(selected.downloads.toLocaleString(), " </p>\n      <p> views: ").concat(selected.page_views.toLocaleString(), " </p>\n    ");
     selectedDiv.innerHTML = selectedTemplate;
   } else {
-    selectedDiv.innerHTML = '';
+    selectedDiv.innerHTML = "";
   }
 }
 
-var BASE_URL = window.location.href; //process.env.PUBLIC_URL ? process.env.PUBLIC_URL : '';
-
+var BASE_URL = "https://stuartlynn.github.io/MetaDataVisualisation/" ? "https://stuartlynn.github.io/MetaDataVisualisation/" : "";
 d3.csv("".concat(BASE_URL, "/dataset_stats.csv")).then(function (datasets) {
   d3.csv("".concat(BASE_URL, "/links.csv")).then(function (links) {
+    console.log("datasets ", datasets);
     var nodes = datasets.map(function (a, i) {
       var angle = Math.random() * 2.0 * Math.PI;
       return _objectSpread({}, a, {
@@ -39368,13 +39369,12 @@ d3.csv("".concat(BASE_URL, "/dataset_stats.csv")).then(function (datasets) {
         id: i
       });
     });
-    document.addEventListener('mousemove', function (e) {
+    document.addEventListener("mousemove", function (e) {
       wx = (e.pageX / window.innerWidth - 0.5) * 2;
       wy = -1.0 * (e.pageY / window.innerHeight - 0.5) * 2;
       var near = findNearest(wx, wy, nodes, window.innerWidth, window.innerHeight);
 
       if (near.length > 0) {
-        console.log('near ', near[0].id);
         selectedID = near[0].id;
         setSelected(near[0]);
       } else {
@@ -39384,33 +39384,46 @@ d3.csv("".concat(BASE_URL, "/dataset_stats.csv")).then(function (datasets) {
     });
 
     var setColorLegend = function setColorLegend() {
-      var keyDiv = document.getElementById('color-key');
+      var keyDiv = document.getElementById("color-key");
 
       if (showColor) {
         var keyString = "\n            <h1>Departments</h1>\n            <div class='entries'>\n                ".concat(Object.entries(_color_key.default).map(function (a) {
           return "<div class='entry'><div class='circle' style='background-color:rgb(".concat(a[1][0] * 255, ", ").concat(a[1][1] * 255, ", ").concat(a[1][2] * 255, ")'> </div> <p>").concat(a[0], "</p></div>");
-        }).join('\n'), "\n            </div>\n                ");
+        }).join("\n"), "\n            </div>\n                ");
         keyDiv.innerHTML = keyString;
       } else {
-        keyDiv.innerHTML = '';
+        keyDiv.innerHTML = "";
       }
     };
 
+    var noOfXClusters = 5;
+    var noOfYClusters = 4;
+    var topCats = Object.keys(_color_key.default);
+    console.log("Color key ", _color_key.default);
     var showColor = false;
+    var categoryClusters = false;
+    var centerForceX = d3.forceX().strength(0.04);
+    var centerForceY = d3.forceY().strength(0.04);
+    var categoryForceX = d3.forceX(function (d) {
+      return topCats.indexOf(d.agency) % noOfXClusters / noOfXClusters * window.innerWidth * 1.5 - window.innerWidth * 0.5;
+    }).strength(0.04);
+    var categoryForceY = d3.forceY(function (d) {
+      return Math.floor(topCats.indexOf(d.agency) / noOfXClusters) / noOfYClusters * window.innerHeight * 1.3 - window.innerHeight * 0.8;
+    }).strength(0.04);
     var linkForce = d3.forceLink([]);
     var chargeForce = d3.forceManyBody().strength(-20);
-    var simulation = d3.forceSimulation(nodes).velocityDecay(0.2).force('x', d3.forceX().strength(0.04)).force('y', d3.forceY().strength(0.04)).force('link', linkForce).force('collide', d3.forceCollide().strength(1).iterations(1).radius(function (d) {
+    var simulation = d3.forceSimulation(nodes).velocityDecay(0.2).force("forceX", centerForceX).force("forceY", centerForceY).force("link", linkForce).force("collide", d3.forceCollide().strength(1).iterations(1).radius(function (d) {
       return d.r;
     })).stop();
     var regl = (0, _regl.default)({
-      extensions: ['OES_standard_derivatives']
+      extensions: ["OES_standard_derivatives"]
     });
     var twee = (0, _reglTween.default)(regl);
     var radiusBuffer = twee.buffer(nodes.map(function (n) {
       return n.r;
     }), {
       duration: 1000,
-      ease: 'expo-in-out'
+      ease: "expo-in-out"
     });
 
     function setSizeVar(v) {
@@ -39420,7 +39433,7 @@ d3.csv("".concat(BASE_URL, "/dataset_stats.csv")).then(function (datasets) {
       var min = Math.min.apply(Math, _toConsumableArray(datasets.map(function (d) {
         return v ? d[v] : 10;
       })));
-      var range = v === 'd' ? [2, 40] : [2, 200];
+      var range = v === "d" ? [2, 40] : [2, 200];
       var scale = d3.scaleSqrt().domain([min, max]).range(range);
       nodes = nodes.map(function (n, i) {
         return _objectSpread({}, n, {
@@ -39456,7 +39469,7 @@ d3.csv("".concat(BASE_URL, "/dataset_stats.csv")).then(function (datasets) {
       count: function count(context, props) {
         return props.nodes.length;
       },
-      primitive: 'points'
+      primitive: "points"
     });
     var drawPointer = regl({
       vert: _circleVert.default,
@@ -39472,7 +39485,7 @@ d3.csv("".concat(BASE_URL, "/dataset_stats.csv")).then(function (datasets) {
         nodeColor: [[1.0, 0.0, 0.0, 1.0]]
       },
       count: 1,
-      primitive: 'points'
+      primitive: "points"
     });
     regl.frame(function (_ref) {
       var tick = _ref.tick;
@@ -39487,42 +39500,64 @@ d3.csv("".concat(BASE_URL, "/dataset_stats.csv")).then(function (datasets) {
         height: window.innerHeight
       });
       /*drawPointer({
-        x: wx,
-        y: wy,
-                });*/
+      x: wx,
+      y: wy,
+          });*/
     });
-    document.addEventListener('keypress', function (e) {
-      if (e.key === 'l') {
-        simulation.force('charge', chargeForce);
-        simulation.force('link').links(links);
+    document.addEventListener("keypress", function (e) {
+      if (e.keyCode === 32) {
         simulation.alpha(0.4);
       }
 
-      if (e.key === 'k') {
-        simulation.force('link').links([]);
-        simulation.force('charge', null);
+      if (e.key === "s") {
+        categoryClusters = !categoryClusters;
+
+        if (categoryClusters) {
+          simulation.force("forceX", categoryForceX);
+          simulation.force("forceY", categoryForceY);
+          simulation.alpha(0.4);
+        } else {
+          simulation.force("forceX", centerForceX);
+          simulation.force("forceY", centerForceY);
+          simulation.alpha(0.4);
+        }
+      }
+
+      if (e.key === "l") {
+        simulation.force("charge", chargeForce);
+        simulation.force("link").links(links);
         simulation.alpha(0.4);
       }
 
-      if (e.key === 'r') {
+      if (e.key === "k") {
+        simulation.force("link").links([]);
+        simulation.force("charge", null);
+        simulation.alpha(0.4);
+      }
+
+      if (e.key === "r") {
         setSizeVar();
       }
 
-      if (e.key === 'd') {
-        setSizeVar('downloads');
+      if (e.key === "d") {
+        setSizeVar("downloads");
       }
 
-      if (e.key === 'c') {
+      if (e.key === "w") {
+        setSizeVar("rows");
+      }
+
+      if (e.key === "c") {
         showColor = !showColor;
         setColorLegend();
       }
 
-      if (e.key === 'j') {
-        setSizeVar('d');
+      if (e.key === "j") {
+        setSizeVar("d");
       }
 
-      if (e.key === 'v') {
-        setSizeVar('page_views');
+      if (e.key === "v") {
+        setSizeVar("page_views");
       }
     });
   });
@@ -39555,7 +39590,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44175" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "32945" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
