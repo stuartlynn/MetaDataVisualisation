@@ -39325,6 +39325,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//import reglline2d from "regl-line2d";
 //import data from './dataset_stats.csv';
 //import Papa from 'pappaparse';
 //let d = Papa.parse(data, {header: true});
@@ -39352,9 +39353,9 @@ function setSelected(selected) {
   }
 }
 
-var BASE_URL = "https://stuartlynn.github.io/MetaDataVisualisation/" ? "https://stuartlynn.github.io/MetaDataVisualisation/" : "";
-d3.csv("".concat(BASE_URL, "/dataset_stats.csv")).then(function (datasets) {
-  d3.csv("".concat(BASE_URL, "/links.csv")).then(function (links) {
+var BASE_URL = undefined ? undefined : "";
+d3.csv("".concat(BASE_URL, "dataset_stats.csv")).then(function (datasets) {
+  d3.csv("".concat(BASE_URL, "links.csv")).then(function (links) {
     console.log("datasets ", datasets);
     var nodes = datasets.map(function (a, i) {
       var angle = Math.random() * 2.0 * Math.PI;
@@ -39416,9 +39417,10 @@ d3.csv("".concat(BASE_URL, "/dataset_stats.csv")).then(function (datasets) {
       return d.r;
     })).stop();
     var regl = (0, _regl.default)({
-      extensions: ["OES_standard_derivatives"]
+      extensions: ["OES_standard_derivatives", "ANGLE_instanced_arrays"]
     });
-    var twee = (0, _reglTween.default)(regl);
+    var twee = (0, _reglTween.default)(regl); //const line2d = reglline2d(regl);
+
     var radiusBuffer = twee.buffer(nodes.map(function (n) {
       return n.r;
     }), {
@@ -39590,7 +39592,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "32945" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40235" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
