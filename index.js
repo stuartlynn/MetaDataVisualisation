@@ -25,6 +25,21 @@ function findNearest(x, y, nodes, width, height) {
     return hits;
 }
 
+const joinCols = [
+    "bin",
+    "bbl",
+    "school_name",
+    "council_district",
+    "nta",
+    "dbn",
+    "census_tract",
+    "district",
+    "community_council"
+];
+
+let currentJoinCols = [];
+let joinColIndex = 0;
+
 function setSelected(selected) {
     const selectedDiv = document.getElementById("selected");
     if (selected) {
@@ -249,7 +264,10 @@ d3.csv(`${BASE_URL}dataset_stats.csv`).then(datasets => {
             }
             if (e.key === "l") {
                 simulation.force("charge", chargeForce);
-                simulation.force("link").links(links);
+                simulation
+                    .force("link")
+                    .links(links.filter(l => joinCols[joinColIndex] === l.col));
+                joinColIndex += 1;
                 simulation.alpha(0.4);
             }
             if (e.key === "k") {
