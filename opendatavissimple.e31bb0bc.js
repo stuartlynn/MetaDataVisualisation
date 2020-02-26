@@ -39342,6 +39342,10 @@ function findNearest(x, y, nodes, width, height) {
   return hits;
 }
 
+var joinCols = ["bin", "bbl", "school_name", "council_district", "nta", "dbn", "census_tract", "district", "community_council"];
+var currentJoinCols = [];
+var joinColIndex = 0;
+
 function setSelected(selected) {
   var selectedDiv = document.getElementById("selected");
 
@@ -39383,6 +39387,18 @@ d3.csv("".concat(BASE_URL, "dataset_stats.csv")).then(function (datasets) {
         selectedID = null;
       }
     });
+
+    var clearSizeLegend = function clearSizeLegend() {
+      document.getElementById("size-key").innerHTML = "";
+    };
+
+    var setSizeLegend = function setSizeLegend(title, valStops, sizeStops) {
+      var sizeKey = " \n             <h1>".concat(title, "</h1>\n            <ul>\n            ").concat(valStops.map(function (val, index) {
+        return "<li>\n                    <p class='size-label'>".concat(val.toLocaleString(), "</p>\n                        <div class='size-circle' style='width:").concat(sizeStops[index], "px;height:").concat(sizeStops[index], "px; border-radius: ").concat(sizeStops[index], "px '></div> \n                 </li>\n                 ");
+      }).join("\n"), "\n            </ul>\n            ");
+      console.log("deploying template  ", sizeKey);
+      document.getElementById("size-key").innerHTML = sizeKey;
+    };
 
     var setColorLegend = function setColorLegend() {
       var keyDiv = document.getElementById("color-key");
@@ -39447,6 +39463,17 @@ d3.csv("".concat(BASE_URL, "dataset_stats.csv")).then(function (datasets) {
       }));
       simulation.alpha(v ? 0.01 : 0.1);
       simulation.nodes(nodes);
+      var buckets = 5;
+      var step = (range[1] - range[0]) / 5;
+
+      var sizes = _toConsumableArray(Array(5)).map(function (_, i) {
+        return i * step + min;
+      });
+
+      var vals = sizes.map(function (r) {
+        return scale.invert(r);
+      });
+      setSizeLegend("Sizing by ".concat(v), vals, sizes);
     }
 
     var drawParticles = twee({
@@ -39527,7 +39554,10 @@ d3.csv("".concat(BASE_URL, "dataset_stats.csv")).then(function (datasets) {
 
       if (e.key === "l") {
         simulation.force("charge", chargeForce);
-        simulation.force("link").links(links);
+        simulation.force("link").links(links.filter(function (l) {
+          return joinCols[joinColIndex] === l.col;
+        }));
+        joinColIndex += 1;
         simulation.alpha(0.4);
       }
 
@@ -39539,6 +39569,7 @@ d3.csv("".concat(BASE_URL, "dataset_stats.csv")).then(function (datasets) {
 
       if (e.key === "r") {
         setSizeVar();
+        clearSizeLegend();
       }
 
       if (e.key === "d") {
@@ -39592,7 +39623,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40235" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37091" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
