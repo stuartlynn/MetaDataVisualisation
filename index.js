@@ -92,6 +92,35 @@ d3.csv(`${BASE_URL}dataset_stats.csv`).then(datasets => {
             }
         });
 
+        const clearSizeLegend = () => {
+            document.getElementById("size-key").innerHTML = "";
+        };
+
+        const setSizeLegend = (title, valStops, sizeStops) => {
+            const sizeKey = ` 
+             <h1>${title}</h1>
+            <ul>
+            ${valStops
+                .map(
+                    (val, index) =>
+                        `<li>
+                    <p class='size-label'>${val.toLocaleString()}</p>
+                        <div class='size-circle' style='width:${
+                            sizeStops[index]
+                        }px;height:${sizeStops[index]}px; border-radius: ${
+                            sizeStops[index]
+                        }px '></div> 
+                 </li>
+                 `
+                )
+                .join("\n")}
+            </ul>
+            `;
+
+            console.log("deploying template  ", sizeKey);
+            document.getElementById("size-key").innerHTML = sizeKey;
+        };
+
         const setColorLegend = () => {
             const keyDiv = document.getElementById("color-key");
             if (showColor) {
@@ -194,6 +223,11 @@ d3.csv(`${BASE_URL}dataset_stats.csv`).then(datasets => {
             radiusBuffer.update(nodes.map(n => n.r));
             simulation.alpha(v ? 0.01 : 0.1);
             simulation.nodes(nodes);
+            const buckets = 5;
+            const step = (range[1] - range[0]) / 5;
+            let sizes = [...Array(5)].map((_, i) => i * step + min);
+            let vals = sizes.map(r => scale.invert(r));
+            setSizeLegend(`Sizing by ${v}`, vals, sizes);
         }
 
         const drawParticles = twee({
@@ -277,6 +311,7 @@ d3.csv(`${BASE_URL}dataset_stats.csv`).then(datasets => {
             }
             if (e.key === "r") {
                 setSizeVar();
+                clearSizeLegend();
             }
             if (e.key === "d") {
                 setSizeVar("downloads");
