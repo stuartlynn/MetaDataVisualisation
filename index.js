@@ -56,6 +56,17 @@ function setSelected(selected) {
     }
 }
 
+function setJoinColumn(selectedCols) {
+    console.log("joining with ", selectedCols);
+    document.getElementById(
+        "join-col"
+    ).innerHTML = `Joining on ${selectedCols.join(", ")}`;
+}
+
+function clearJoinColumn() {
+    document.getElementById("join-col").innerHTML = ``;
+}
+
 const BASE_URL = process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "";
 
 d3.csv(`${BASE_URL}dataset_stats.csv`).then(datasets => {
@@ -298,10 +309,30 @@ d3.csv(`${BASE_URL}dataset_stats.csv`).then(datasets => {
             }
             if (e.key === "l") {
                 simulation.force("charge", chargeForce);
-                simulation
-                    .force("link")
-                    .links(links.filter(l => joinCols[joinColIndex] === l.col));
-                joinColIndex += 1;
+                if (joinColIndex < joinCols.length) {
+                    setJoinColumn([joinCols[joinColIndex]]);
+                    simulation
+                        .force("link")
+                        .links(
+                            links.filter(l => joinCols[joinColIndex] === l.col)
+                        );
+                    joinColIndex += 1;
+                } else {
+                    setJoinColumn([
+                        "bin",
+                        "school_name",
+                        "census_tract",
+                        "council_district"
+                    ]);
+                    simulation
+                        .force("link")
+                        .links(
+                            links.filter(l =>
+                                ["bin", "school_name"].includes(l.col)
+                            )
+                        );
+                    joinColIndex += 1;
+                }
                 simulation.alpha(0.4);
             }
             if (e.key === "k") {
