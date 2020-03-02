@@ -25,34 +25,70 @@ function findNearest(x, y, nodes, width, height) {
     return hits;
 }
 
-const joinCols = [
-    "bin",
-    "bbl",
-    "school_name",
-    "council_district",
-    "nta",
-    "dbn",
-    "census_tract",
-    "district",
-    "community_council"
-];
+const joinCols = ["school_name", "council_district", "bbl"];
+
+const noOfXClusters = 5;
+const noOfYClusters = 4;
 
 let currentJoinCols = [];
 let joinColIndex = 0;
 
+const xClusterPos = (i, noOfXClusters, noOfYClusters) => {
+    return (
+        ((i % noOfXClusters) / noOfXClusters) * window.innerWidth * 1.5 -
+        window.innerWidth * 0.5
+    );
+};
+
+const yClusterPos = (i, noOfXClusters, noOfYClusters) => {
+    return (
+        (Math.floor(i / noOfXClusters) / noOfYClusters) *
+            window.innerHeight *
+            1.3 -
+        window.innerHeight * 0.8
+    );
+};
+
+function showCategoryLabels(topCats, noXClusters, noYClusters) {
+    const screenToX = x => (x / 2.0 + 0.5) * window.innerWidth;
+    const screenToY = y => ((y * -1.0) / 2.0 + 0.5) * window.innerHeight;
+
+    const xToScreen = x => (x / window.innerWidth - 0.5) * 2;
+    const yToScreen = y => -1.0 * (y / window.innerHeight - 0.5) * 2;
+
+    const labels = topCats
+        .map(
+            (cat, i) =>
+                `<div class='cat-label' style='top:${screenToY(
+                    yClusterPos(i, noOfXClusters, noYClusters) /
+                        window.innerHeight
+                ) + 100}px; left:${screenToX(
+                    xClusterPos(i, noXClusters, noYClusters) / window.innerWidth
+                )}px;' > ${cat}</div> `
+        )
+        .join("\n");
+    document.getElementById("cat-labels").innerHTML = labels;
+}
+
+function hideCategoryLabels() {
+    document.getElementById("cat-labels").style.opacity = 0.0;
+}
+
 function setSelected(selected) {
     const selectedDiv = document.getElementById("selected");
+
     if (selected) {
+        selectedDiv.style.display = "block";
         const selectedTemplate = ` 
-      <h1>Selection</h1>
-      <p> name: ${selected.name} </p>
-      <p> agency: ${selected.agency} </p>
-      <p> downloads: ${selected.downloads.toLocaleString()} </p>
-      <p> views: ${selected.page_views.toLocaleString()} </p>
+      <h1>${selected.name}</h1>
+      <p>${selected.agency} </p>
+      <p> downloads: ${parseInt(selected.downloads).toLocaleString()} </p>
+      <p> views: ${parseInt(selected.page_views.toLocaleString())} </p>
     `;
         selectedDiv.innerHTML = selectedTemplate;
     } else {
         selectedDiv.innerHTML = "";
+        selectedDiv.style.display = "none";
     }
 }
 
@@ -87,6 +123,9 @@ d3.csv(`${BASE_URL}dataset_stats.csv`).then(datasets => {
         document.addEventListener("mousemove", e => {
             wx = (e.pageX / window.innerWidth - 0.5) * 2;
             wy = -1.0 * (e.pageY / window.innerHeight - 0.5) * 2;
+            const selectedDiv = document.getElementById("selected");
+            selectedDiv.style.top = e.pageY + "px";
+            selectedDiv.style.left = e.pageX + "px";
             const near = findNearest(
                 wx,
                 wy,
@@ -128,13 +167,15 @@ d3.csv(`${BASE_URL}dataset_stats.csv`).then(datasets => {
             </ul>
             `;
 
-            console.log("deploying template  ", sizeKey);
             document.getElementById("size-key").innerHTML = sizeKey;
         };
 
         const setColorLegend = () => {
-            const keyDiv = document.getElementById("color-key");
+            const colorKeyDiv = document.getElementById("color-key");
+            const key = document.getElementById("key");
+
             if (showColor) {
+                key.style.opacity = 0.7;
                 const keyString = `
             <h1>Departments</h1>
             <div class='entries'>
@@ -148,14 +189,12 @@ d3.csv(`${BASE_URL}dataset_stats.csv`).then(datasets => {
                     .join("\n")}
             </div>
                 `;
-                keyDiv.innerHTML = keyString;
+                colorKeyDiv.innerHTML = keyString;
             } else {
-                keyDiv.innerHTML = "";
+                key.style.opacity = 0.0;
             }
         };
 
-        const noOfXClusters = 5;
-        const noOfYClusters = 4;
         const topCats = Object.keys(colorKey);
 
         console.log("Color key ", colorKey);
@@ -168,24 +207,22 @@ d3.csv(`${BASE_URL}dataset_stats.csv`).then(datasets => {
         const centerForceY = d3.forceY().strength(0.04);
 
         const categoryForceX = d3
-            .forceX(
-                d =>
-                    ((topCats.indexOf(d.agency) % noOfXClusters) /
-                        noOfXClusters) *
-                        window.innerWidth *
-                        1.5 -
-                    window.innerWidth * 0.5
+            .forceX(d =>
+                xClusterPos(
+                    topCats.indexOf(d.agency),
+                    noOfXClusters,
+                    noOfYClusters
+                )
             )
             .strength(0.04);
 
         const categoryForceY = d3
-            .forceY(
-                d =>
-                    (Math.floor(topCats.indexOf(d.agency) / noOfXClusters) /
-                        noOfYClusters) *
-                        window.innerHeight *
-                        1.3 -
-                    window.innerHeight * 0.8
+            .forceY(d =>
+                yClusterPos(
+                    topCats.indexOf(d.agency),
+                    noOfXClusters,
+                    noOfYClusters
+                )
             )
             .strength(0.04);
 
@@ -287,8 +324,8 @@ d3.csv(`${BASE_URL}dataset_stats.csv`).then(datasets => {
             });
 
             /*drawPointer({
-        x: wx,
-        y: wy,
+                x: wx,
+                y: wy
                 });*/
         });
         document.addEventListener("keypress", e => {
@@ -301,10 +338,12 @@ d3.csv(`${BASE_URL}dataset_stats.csv`).then(datasets => {
                     simulation.force("forceX", categoryForceX);
                     simulation.force("forceY", categoryForceY);
                     simulation.alpha(0.4);
+                    showCategoryLabels(topCats, noOfXClusters, noOfYClusters);
                 } else {
                     simulation.force("forceX", centerForceX);
                     simulation.force("forceY", centerForceY);
                     simulation.alpha(0.4);
+                    hideCategoryLabels();
                 }
             }
             if (e.key === "l") {
@@ -318,17 +357,16 @@ d3.csv(`${BASE_URL}dataset_stats.csv`).then(datasets => {
                         );
                     joinColIndex += 1;
                 } else {
-                    setJoinColumn([
-                        "bin",
-                        "school_name",
-                        "census_tract",
-                        "council_district"
-                    ]);
+                    setJoinColumn(["bbl", "school_name", "council_district"]);
                     simulation
                         .force("link")
                         .links(
                             links.filter(l =>
-                                ["bin", "school_name"].includes(l.col)
+                                [
+                                    "bbl",
+                                    "school_name",
+                                    "council_district"
+                                ].includes(l.col)
                             )
                         );
                     joinColIndex += 1;
