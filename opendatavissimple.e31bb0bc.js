@@ -39342,18 +39342,57 @@ function findNearest(x, y, nodes, width, height) {
   return hits;
 }
 
-var joinCols = ["bin", "bbl", "school_name", "council_district", "nta", "dbn", "census_tract", "district", "community_council"];
+var joinCols = ["school_name", "council_district", "bbl"];
+var noOfXClusters = 5;
+var noOfYClusters = 4;
 var currentJoinCols = [];
 var joinColIndex = 0;
+
+var xClusterPos = function xClusterPos(i, noOfXClusters, noOfYClusters) {
+  return i % noOfXClusters / noOfXClusters * window.innerWidth * 1.5 - window.innerWidth * 0.5;
+};
+
+var yClusterPos = function yClusterPos(i, noOfXClusters, noOfYClusters) {
+  return Math.floor(i / noOfXClusters) / noOfYClusters * window.innerHeight * 1.3 - window.innerHeight * 0.8;
+};
+
+function showCategoryLabels(topCats, noXClusters, noYClusters) {
+  var screenToX = function screenToX(x) {
+    return (x / 2.0 + 0.5) * window.innerWidth;
+  };
+
+  var screenToY = function screenToY(y) {
+    return (y * -1.0 / 2.0 + 0.5) * window.innerHeight;
+  };
+
+  var xToScreen = function xToScreen(x) {
+    return (x / window.innerWidth - 0.5) * 2;
+  };
+
+  var yToScreen = function yToScreen(y) {
+    return -1.0 * (y / window.innerHeight - 0.5) * 2;
+  };
+
+  var labels = topCats.map(function (cat, i) {
+    return "<div class='cat-label' style='top:".concat(screenToY(yClusterPos(i, noOfXClusters, noYClusters) / window.innerHeight) + 100, "px; left:").concat(screenToX(xClusterPos(i, noXClusters, noYClusters) / window.innerWidth), "px;' > ").concat(cat, "</div> ");
+  }).join("\n");
+  document.getElementById("cat-labels").innerHTML = labels;
+}
+
+function hideCategoryLabels() {
+  document.getElementById("cat-labels").style.opacity = 0.0;
+}
 
 function setSelected(selected) {
   var selectedDiv = document.getElementById("selected");
 
   if (selected) {
-    var selectedTemplate = " \n      <h1>Selection</h1>\n      <p> name: ".concat(selected.name, " </p>\n      <p> agency: ").concat(selected.agency, " </p>\n      <p> downloads: ").concat(selected.downloads.toLocaleString(), " </p>\n      <p> views: ").concat(selected.page_views.toLocaleString(), " </p>\n    ");
+    selectedDiv.style.display = "block";
+    var selectedTemplate = " \n      <h1>".concat(selected.name, "</h1>\n      <p>").concat(selected.agency, " </p>\n      <p> downloads: ").concat(parseInt(selected.downloads).toLocaleString(), " </p>\n      <p> views: ").concat(parseInt(selected.page_views.toLocaleString()), " </p>\n    ");
     selectedDiv.innerHTML = selectedTemplate;
   } else {
     selectedDiv.innerHTML = "";
+    selectedDiv.style.display = "none";
   }
 }
 
@@ -39386,6 +39425,9 @@ d3.csv("".concat(BASE_URL, "dataset_stats.csv")).then(function (datasets) {
     document.addEventListener("mousemove", function (e) {
       wx = (e.pageX / window.innerWidth - 0.5) * 2;
       wy = -1.0 * (e.pageY / window.innerHeight - 0.5) * 2;
+      var selectedDiv = document.getElementById("selected");
+      selectedDiv.style.top = e.pageY + "px";
+      selectedDiv.style.left = e.pageX + "px";
       var near = findNearest(wx, wy, nodes, window.innerWidth, window.innerHeight);
 
       if (near.length > 0) {
@@ -39405,25 +39447,24 @@ d3.csv("".concat(BASE_URL, "dataset_stats.csv")).then(function (datasets) {
       var sizeKey = " \n             <h1>".concat(title, "</h1>\n            <ul>\n            ").concat(valStops.map(function (val, index) {
         return "<li>\n                    <p class='size-label'>".concat(val.toLocaleString(), "</p>\n                        <div class='size-circle' style='width:").concat(sizeStops[index], "px;height:").concat(sizeStops[index], "px; border-radius: ").concat(sizeStops[index], "px '></div> \n                 </li>\n                 ");
       }).join("\n"), "\n            </ul>\n            ");
-      console.log("deploying template  ", sizeKey);
       document.getElementById("size-key").innerHTML = sizeKey;
     };
 
     var setColorLegend = function setColorLegend() {
-      var keyDiv = document.getElementById("color-key");
+      var colorKeyDiv = document.getElementById("color-key");
+      var key = document.getElementById("key");
 
       if (showColor) {
+        key.style.opacity = 0.7;
         var keyString = "\n            <h1>Departments</h1>\n            <div class='entries'>\n                ".concat(Object.entries(_color_key.default).map(function (a) {
           return "<div class='entry'><div class='circle' style='background-color:rgb(".concat(a[1][0] * 255, ", ").concat(a[1][1] * 255, ", ").concat(a[1][2] * 255, ")'> </div> <p>").concat(a[0], "</p></div>");
         }).join("\n"), "\n            </div>\n                ");
-        keyDiv.innerHTML = keyString;
+        colorKeyDiv.innerHTML = keyString;
       } else {
-        keyDiv.innerHTML = "";
+        key.style.opacity = 0.0;
       }
     };
 
-    var noOfXClusters = 5;
-    var noOfYClusters = 4;
     var topCats = Object.keys(_color_key.default);
     console.log("Color key ", _color_key.default);
     var showColor = false;
@@ -39431,10 +39472,10 @@ d3.csv("".concat(BASE_URL, "dataset_stats.csv")).then(function (datasets) {
     var centerForceX = d3.forceX().strength(0.04);
     var centerForceY = d3.forceY().strength(0.04);
     var categoryForceX = d3.forceX(function (d) {
-      return topCats.indexOf(d.agency) % noOfXClusters / noOfXClusters * window.innerWidth * 1.5 - window.innerWidth * 0.5;
+      return xClusterPos(topCats.indexOf(d.agency), noOfXClusters, noOfYClusters);
     }).strength(0.04);
     var categoryForceY = d3.forceY(function (d) {
-      return Math.floor(topCats.indexOf(d.agency) / noOfXClusters) / noOfYClusters * window.innerHeight * 1.3 - window.innerHeight * 0.8;
+      return yClusterPos(topCats.indexOf(d.agency), noOfXClusters, noOfYClusters);
     }).strength(0.04);
     var linkForce = d3.forceLink([]);
     var chargeForce = d3.forceManyBody().strength(-20);
@@ -39538,8 +39579,8 @@ d3.csv("".concat(BASE_URL, "dataset_stats.csv")).then(function (datasets) {
         height: window.innerHeight
       });
       /*drawPointer({
-      x: wx,
-      y: wy,
+          x: wx,
+          y: wy
           });*/
     });
     document.addEventListener("keypress", function (e) {
@@ -39554,10 +39595,12 @@ d3.csv("".concat(BASE_URL, "dataset_stats.csv")).then(function (datasets) {
           simulation.force("forceX", categoryForceX);
           simulation.force("forceY", categoryForceY);
           simulation.alpha(0.4);
+          showCategoryLabels(topCats, noOfXClusters, noOfYClusters);
         } else {
           simulation.force("forceX", centerForceX);
           simulation.force("forceY", centerForceY);
           simulation.alpha(0.4);
+          hideCategoryLabels();
         }
       }
 
@@ -39571,9 +39614,9 @@ d3.csv("".concat(BASE_URL, "dataset_stats.csv")).then(function (datasets) {
           }));
           joinColIndex += 1;
         } else {
-          setJoinColumn(["bin", "school_name", "census_tract", "council_district"]);
+          setJoinColumn(["bbl", "school_name", "council_district"]);
           simulation.force("link").links(links.filter(function (l) {
-            return ["bin", "school_name"].includes(l.col);
+            return ["bbl", "school_name", "council_district"].includes(l.col);
           }));
           joinColIndex += 1;
         }
@@ -39643,7 +39686,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40569" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44913" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
