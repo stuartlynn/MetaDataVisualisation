@@ -332,7 +332,7 @@ d3.csv(`${BASE_URL}dataset_stats.csv`).then(datasets => {
             const step = (range[1] - range[0]) / 5;
             let sizes = [...Array(5)].map((_, i) => i * step + min);
             let vals = sizes.map(r => scale.invert(r));
-            setSizeLegend(`Sizing by ${v}`, vals, sizes);
+            setSizeLegend(`${v}`, vals, sizes);
         }
 
         const drawParticles = twee({
