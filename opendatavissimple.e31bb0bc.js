@@ -39560,7 +39560,7 @@ d3.csv("".concat(BASE_URL, "dataset_stats.csv")).then(function (datasets) {
       var vals = sizes.map(function (r) {
         return scale.invert(r);
       });
-      setSizeLegend("Sizing by ".concat(v), vals, sizes);
+      setSizeLegend("".concat(v), vals, sizes);
     }
 
     var drawParticles = twee({
