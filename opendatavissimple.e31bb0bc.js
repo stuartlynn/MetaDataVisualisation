@@ -39382,7 +39382,7 @@ var yClusterPosScreen = function yClusterPosScreen(i, noOfXClusters, noOfYCluste
   }
 
   var height = window.innerHeight - 2 * buffer;
-  return height * 2 - (Math.floor(i / noOfXClusters) / noOfYClusters * height + buffer);
+  return height - (Math.floor(i / noOfXClusters) / noOfYClusters * height * 0.7 + buffer);
 };
 
 var extractAbrv = function extractAbrv(name) {
@@ -39723,7 +39723,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40849" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34695" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
