@@ -27,44 +27,65 @@ function findNearest(x, y, nodes, width, height) {
 
 const joinCols = ["school_name", "council_district", "bbl"];
 
+const baseRadius = 7;
 const noOfXClusters = 5;
 const noOfYClusters = 4;
 
 let currentJoinCols = [];
 let joinColIndex = 0;
 
-const xClusterPos = (i, noOfXClusters, noOfYClusters) => {
+const widthBuffer = 350;
+const heightBuffer = 200;
+
+const screenToX = x => (x / 2.0 + 0.5) * window.innerWidth;
+const screenToY = y => ((y * -1.0) / 2.0 + 0.5) * window.innerHeight;
+
+const xToScreen = x => (x / window.innerWidth - 0.5) * 2;
+const yToScreen = y => -1.0 * (y / window.innerHeight - 0.5) * 2;
+
+const xClusterPosScreen = (i, noOfXClusters, noOfYClusters, buffer, other) => {
+    if (other) {
+        return window.innerWidth - 150;
+    }
+    const width = window.innerWidth - 2 * buffer;
+    return ((i % noOfXClusters) / (noOfXClusters - 1)) * width + buffer;
+};
+
+const yClusterPosScreen = (i, noOfXClusters, noOfYClusters, buffer, other) => {
+    if (other) {
+        return window.innerHeight / 2;
+    }
+    const height = window.innerHeight - 2 * buffer;
     return (
-        ((i % noOfXClusters) / noOfXClusters) * window.innerWidth * 1.5 -
-        window.innerWidth * 0.5
+        height * 2 -
+        ((Math.floor(i / noOfXClusters) / noOfYClusters) * height + buffer)
     );
 };
 
-const yClusterPos = (i, noOfXClusters, noOfYClusters) => {
-    return (
-        (Math.floor(i / noOfXClusters) / noOfYClusters) *
-            window.innerHeight *
-            1.3 -
-        window.innerHeight * 0.8
-    );
+const extractAbrv = name => {
+    if (name === "Mayor's Office for Economic Opportunity") {
+        return "MOfEO";
+    }
+    return name.includes("(") ? name.split("(")[1].split(")")[0] : name;
 };
 
 function showCategoryLabels(topCats, noXClusters, noYClusters) {
-    const screenToX = x => (x / 2.0 + 0.5) * window.innerWidth;
-    const screenToY = y => ((y * -1.0) / 2.0 + 0.5) * window.innerHeight;
-
-    const xToScreen = x => (x / window.innerWidth - 0.5) * 2;
-    const yToScreen = y => -1.0 * (y / window.innerHeight - 0.5) * 2;
-
     const labels = topCats
         .map(
             (cat, i) =>
-                `<div class='cat-label' style='top:${screenToY(
-                    yClusterPos(i, noOfXClusters, noYClusters) /
-                        window.innerHeight
-                ) + 100}px; left:${screenToX(
-                    xClusterPos(i, noXClusters, noYClusters) / window.innerWidth
-                )}px;' > ${cat}</div> `
+                `<div class='cat-label' style='top:${yClusterPosScreen(
+                    i,
+                    noOfXClusters,
+                    noYClusters,
+                    heightBuffer,
+                    cat === "Other"
+                )}px; left:${xClusterPosScreen(
+                    i,
+                    noXClusters,
+                    noYClusters,
+                    widthBuffer,
+                    cat === "Other"
+                )}px;' > ${extractAbrv(cat)}</div> `
         )
         .join("\n");
     document.getElementById("cat-labels").innerHTML = labels;
@@ -80,10 +101,19 @@ function setSelected(selected) {
     if (selected) {
         selectedDiv.style.display = "block";
         const selectedTemplate = ` 
+      <p class='agency-name'>${selected.agency} </p>
       <h1>${selected.name}</h1>
-      <p>${selected.agency} </p>
-      <p> downloads: ${parseInt(selected.downloads).toLocaleString()} </p>
-      <p> views: ${parseInt(selected.page_views.toLocaleString())} </p>
+      <div class='stats'>
+          <p>
+              <i class='fa fa-download' ></i>  
+              <span>${parseInt(selected.downloads).toLocaleString()}</span>
+        </p>
+                  <p>
+<i class='fa fa-eye' ></i>
+                    <span>${parseInt(
+                        selected.page_views.toLocaleString()
+                    )} </span> </p>
+      </div>
     `;
         selectedDiv.innerHTML = selectedTemplate;
     } else {
@@ -114,7 +144,7 @@ d3.csv(`${BASE_URL}dataset_stats.csv`).then(datasets => {
                 ...a,
                 x: Math.cos(angle) * (window.innerWidth + 500 * i), // (Math.random() - 0.5) * 20,
                 y: Math.sin(angle) * (window.innerWidth + 500 * i),
-                r: 10, //Math.random() * 10 + 1,
+                r: baseRadius, //Math.random() * 10 + 1,
                 color: [parseFloat(a.r), parseFloat(a.g), parseFloat(a.b), 1], //.0Math.random(), Math.random(), Math.random(), 1],
                 id: i
             };
@@ -124,8 +154,16 @@ d3.csv(`${BASE_URL}dataset_stats.csv`).then(datasets => {
             wx = (e.pageX / window.innerWidth - 0.5) * 2;
             wy = -1.0 * (e.pageY / window.innerHeight - 0.5) * 2;
             const selectedDiv = document.getElementById("selected");
-            selectedDiv.style.top = e.pageY + "px";
-            selectedDiv.style.left = e.pageX + "px";
+            if (e.pageY < innerHeight / 2) {
+                selectedDiv.style.top = e.pageY + "px";
+            } else {
+                selectedDiv.style.top = e.pageY - 200 + "px";
+            }
+            if (e.pageX < innerWidth / 2) {
+                selectedDiv.style.left = e.pageX + "px";
+            } else {
+                selectedDiv.style.left = e.pageX - 400 + "px";
+            }
             const near = findNearest(
                 wx,
                 wy,
@@ -151,14 +189,19 @@ d3.csv(`${BASE_URL}dataset_stats.csv`).then(datasets => {
              <h1>${title}</h1>
             <ul>
             ${valStops
+                .slice(1)
                 .map(
                     (val, index) =>
                         `<li>
-                    <p class='size-label'>${val.toLocaleString()}</p>
+                    <p class='size-label'>${Math.floor(
+                        val
+                    ).toLocaleString()}</p>
                         <div class='size-circle' style='width:${
-                            sizeStops[index]
-                        }px;height:${sizeStops[index]}px; border-radius: ${
-                            sizeStops[index]
+                            sizeStops.slice(1)[index]
+                        }px;height:${
+                            sizeStops.slice(1)[index]
+                        }px; border-radius: ${
+                            sizeStops.slice(1)[index]
                         }px '></div> 
                  </li>
                  `
@@ -173,18 +216,22 @@ d3.csv(`${BASE_URL}dataset_stats.csv`).then(datasets => {
         const setColorLegend = () => {
             const colorKeyDiv = document.getElementById("color-key");
             const key = document.getElementById("key");
+            const cc = colorKey;
 
             if (showColor) {
-                key.style.opacity = 0.7;
+                key.style.opacity = 1.0;
                 const keyString = `
-            <h1>Departments</h1>
             <div class='entries'>
-                ${Object.entries(colorKey)
+                ${[
+                    ...Object.entries(colorKey).filter(a => a[0] !== "Other"),
+                    ...Object.entries(colorKey).filter(a => a[0] === "Other")
+                ]
                     .map(
                         a =>
-                            `<div class='entry'><div class='circle' style='background-color:rgb(${a[1][0] *
+                            `<div class='entry'><p style='color: rgb(${a[1][0] *
                                 255}, ${a[1][1] * 255}, ${a[1][2] *
-                                255})'> </div> <p>${a[0]}</p></div>`
+                                255});'>${extractAbrv(a[0])}
+                                </p></div>`
                     )
                     .join("\n")}
             </div>
@@ -207,22 +254,32 @@ d3.csv(`${BASE_URL}dataset_stats.csv`).then(datasets => {
         const centerForceY = d3.forceY().strength(0.04);
 
         const categoryForceX = d3
-            .forceX(d =>
-                xClusterPos(
-                    topCats.indexOf(d.agency),
-                    noOfXClusters,
-                    noOfYClusters
-                )
+            .forceX(
+                d =>
+                    xToScreen(
+                        xClusterPosScreen(
+                            topCats.indexOf(d.agency),
+                            noOfXClusters,
+                            noOfYClusters,
+                            widthBuffer,
+                            topCats.indexOf(d.agency) === -1
+                        )
+                    ) * window.innerWidth
             )
             .strength(0.04);
 
         const categoryForceY = d3
-            .forceY(d =>
-                yClusterPos(
-                    topCats.indexOf(d.agency),
-                    noOfXClusters,
-                    noOfYClusters
-                )
+            .forceY(
+                d =>
+                    yToScreen(
+                        yClusterPosScreen(
+                            topCats.indexOf(d.agency),
+                            noOfXClusters,
+                            noOfYClusters,
+                            heightBuffer,
+                            topCats.indexOf(d.agency) === -1
+                        )
+                    ) * window.innerHeight
             )
             .strength(0.04);
 
@@ -240,7 +297,7 @@ d3.csv(`${BASE_URL}dataset_stats.csv`).then(datasets => {
                     .forceCollide()
                     .strength(1)
                     .iterations(1)
-                    .radius(d => d.r)
+                    .radius(d => d.r * 0.9)
             )
             .stop();
 
@@ -266,7 +323,7 @@ d3.csv(`${BASE_URL}dataset_stats.csv`).then(datasets => {
 
             nodes = nodes.map((n, i) => ({
                 ...n,
-                r: v ? scale(parseFloat(datasets[i][v])) : 10
+                r: v ? scale(parseFloat(datasets[i][v])) : baseRadius
             }));
             radiusBuffer.update(nodes.map(n => n.r));
             simulation.alpha(v ? 0.01 : 0.1);
