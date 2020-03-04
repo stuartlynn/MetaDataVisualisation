@@ -39270,7 +39270,7 @@ module.exports = {
   "Mayor's Office of Operations (OPS)": [0.5571803870240879, 0.6507747739933957, 0.19331667588333168],
   "Department of Health and Mental Hygiene (DOHMH)": [0.46810256823426116, 0.6699492535792404, 0.19289587399044988],
   "Department of Youth and Community Development (DYCD)": [0.3126890019504329, 0.6928754610296064, 0.1923704830330379],
-  "Other": [0.19645998900718342, 0.6974309119838096, 0.3614680088321782],
+  "Other": [1.0, 1.0, 1.0],
   "Department of Probation (DOP)": [0.20125317221201128, 0.6907920815379025, 0.47966761189275336],
   "School Construction Authority (SCA)": [0.2047934223695329, 0.6857201900461317, 0.5491539606228022],
   "Human Resources Administration (HRA)": [0.20774052347943134, 0.6813852191365138, 0.6002900398972028],
@@ -39343,38 +39343,59 @@ function findNearest(x, y, nodes, width, height) {
 }
 
 var joinCols = ["school_name", "council_district", "bbl"];
+var baseRadius = 7;
 var noOfXClusters = 5;
 var noOfYClusters = 4;
 var currentJoinCols = [];
 var joinColIndex = 0;
+var widthBuffer = 350;
+var heightBuffer = 200;
 
-var xClusterPos = function xClusterPos(i, noOfXClusters, noOfYClusters) {
-  return i % noOfXClusters / noOfXClusters * window.innerWidth * 1.5 - window.innerWidth * 0.5;
+var screenToX = function screenToX(x) {
+  return (x / 2.0 + 0.5) * window.innerWidth;
 };
 
-var yClusterPos = function yClusterPos(i, noOfXClusters, noOfYClusters) {
-  return Math.floor(i / noOfXClusters) / noOfYClusters * window.innerHeight * 1.3 - window.innerHeight * 0.8;
+var screenToY = function screenToY(y) {
+  return (y * -1.0 / 2.0 + 0.5) * window.innerHeight;
+};
+
+var xToScreen = function xToScreen(x) {
+  return (x / window.innerWidth - 0.5) * 2;
+};
+
+var yToScreen = function yToScreen(y) {
+  return -1.0 * (y / window.innerHeight - 0.5) * 2;
+};
+
+var xClusterPosScreen = function xClusterPosScreen(i, noOfXClusters, noOfYClusters, buffer, other) {
+  if (other) {
+    return window.innerWidth - 150;
+  }
+
+  var width = window.innerWidth - 2 * buffer;
+  return i % noOfXClusters / (noOfXClusters - 1) * width + buffer;
+};
+
+var yClusterPosScreen = function yClusterPosScreen(i, noOfXClusters, noOfYClusters, buffer, other) {
+  if (other) {
+    return window.innerHeight / 2;
+  }
+
+  var height = window.innerHeight - 2 * buffer;
+  return height * 2 - (Math.floor(i / noOfXClusters) / noOfYClusters * height + buffer);
+};
+
+var extractAbrv = function extractAbrv(name) {
+  if (name === "Mayor's Office for Economic Opportunity") {
+    return "MOfEO";
+  }
+
+  return name.includes("(") ? name.split("(")[1].split(")")[0] : name;
 };
 
 function showCategoryLabels(topCats, noXClusters, noYClusters) {
-  var screenToX = function screenToX(x) {
-    return (x / 2.0 + 0.5) * window.innerWidth;
-  };
-
-  var screenToY = function screenToY(y) {
-    return (y * -1.0 / 2.0 + 0.5) * window.innerHeight;
-  };
-
-  var xToScreen = function xToScreen(x) {
-    return (x / window.innerWidth - 0.5) * 2;
-  };
-
-  var yToScreen = function yToScreen(y) {
-    return -1.0 * (y / window.innerHeight - 0.5) * 2;
-  };
-
   var labels = topCats.map(function (cat, i) {
-    return "<div class='cat-label' style='top:".concat(screenToY(yClusterPos(i, noOfXClusters, noYClusters) / window.innerHeight) + 100, "px; left:").concat(screenToX(xClusterPos(i, noXClusters, noYClusters) / window.innerWidth), "px;' > ").concat(cat, "</div> ");
+    return "<div class='cat-label' style='top:".concat(yClusterPosScreen(i, noOfXClusters, noYClusters, heightBuffer, cat === "Other"), "px; left:").concat(xClusterPosScreen(i, noXClusters, noYClusters, widthBuffer, cat === "Other"), "px;' > ").concat(extractAbrv(cat), "</div> ");
   }).join("\n");
   document.getElementById("cat-labels").innerHTML = labels;
 }
@@ -39388,7 +39409,7 @@ function setSelected(selected) {
 
   if (selected) {
     selectedDiv.style.display = "block";
-    var selectedTemplate = " \n      <h1>".concat(selected.name, "</h1>\n      <p>").concat(selected.agency, " </p>\n      <p> downloads: ").concat(parseInt(selected.downloads).toLocaleString(), " </p>\n      <p> views: ").concat(parseInt(selected.page_views.toLocaleString()), " </p>\n    ");
+    var selectedTemplate = " \n      <p class='agency-name'>".concat(selected.agency, " </p>\n      <h1>").concat(selected.name, "</h1>\n      <div class='stats'>\n          <p>\n              <i class='fa fa-download' ></i>  \n              <span>").concat(parseInt(selected.downloads).toLocaleString(), "</span>\n        </p>\n                  <p>\n<i class='fa fa-eye' ></i>\n                    <span>").concat(parseInt(selected.page_views.toLocaleString()), " </span> </p>\n      </div>\n    ");
     selectedDiv.innerHTML = selectedTemplate;
   } else {
     selectedDiv.innerHTML = "";
@@ -39415,7 +39436,7 @@ d3.csv("".concat(BASE_URL, "dataset_stats.csv")).then(function (datasets) {
         x: Math.cos(angle) * (window.innerWidth + 500 * i),
         // (Math.random() - 0.5) * 20,
         y: Math.sin(angle) * (window.innerWidth + 500 * i),
-        r: 10,
+        r: baseRadius,
         //Math.random() * 10 + 1,
         color: [parseFloat(a.r), parseFloat(a.g), parseFloat(a.b), 1],
         //.0Math.random(), Math.random(), Math.random(), 1],
@@ -39426,8 +39447,19 @@ d3.csv("".concat(BASE_URL, "dataset_stats.csv")).then(function (datasets) {
       wx = (e.pageX / window.innerWidth - 0.5) * 2;
       wy = -1.0 * (e.pageY / window.innerHeight - 0.5) * 2;
       var selectedDiv = document.getElementById("selected");
-      selectedDiv.style.top = e.pageY + "px";
-      selectedDiv.style.left = e.pageX + "px";
+
+      if (e.pageY < innerHeight / 2) {
+        selectedDiv.style.top = e.pageY + "px";
+      } else {
+        selectedDiv.style.top = e.pageY - 200 + "px";
+      }
+
+      if (e.pageX < innerWidth / 2) {
+        selectedDiv.style.left = e.pageX + "px";
+      } else {
+        selectedDiv.style.left = e.pageX - 400 + "px";
+      }
+
       var near = findNearest(wx, wy, nodes, window.innerWidth, window.innerHeight);
 
       if (near.length > 0) {
@@ -39444,8 +39476,8 @@ d3.csv("".concat(BASE_URL, "dataset_stats.csv")).then(function (datasets) {
     };
 
     var setSizeLegend = function setSizeLegend(title, valStops, sizeStops) {
-      var sizeKey = " \n             <h1>".concat(title, "</h1>\n            <ul>\n            ").concat(valStops.map(function (val, index) {
-        return "<li>\n                    <p class='size-label'>".concat(val.toLocaleString(), "</p>\n                        <div class='size-circle' style='width:").concat(sizeStops[index], "px;height:").concat(sizeStops[index], "px; border-radius: ").concat(sizeStops[index], "px '></div> \n                 </li>\n                 ");
+      var sizeKey = " \n             <h1>".concat(title, "</h1>\n            <ul>\n            ").concat(valStops.slice(1).map(function (val, index) {
+        return "<li>\n                    <p class='size-label'>".concat(Math.floor(val).toLocaleString(), "</p>\n                        <div class='size-circle' style='width:").concat(sizeStops.slice(1)[index], "px;height:").concat(sizeStops.slice(1)[index], "px; border-radius: ").concat(sizeStops.slice(1)[index], "px '></div> \n                 </li>\n                 ");
       }).join("\n"), "\n            </ul>\n            ");
       document.getElementById("size-key").innerHTML = sizeKey;
     };
@@ -39453,11 +39485,16 @@ d3.csv("".concat(BASE_URL, "dataset_stats.csv")).then(function (datasets) {
     var setColorLegend = function setColorLegend() {
       var colorKeyDiv = document.getElementById("color-key");
       var key = document.getElementById("key");
+      var cc = _color_key.default;
 
       if (showColor) {
-        key.style.opacity = 0.7;
-        var keyString = "\n            <h1>Departments</h1>\n            <div class='entries'>\n                ".concat(Object.entries(_color_key.default).map(function (a) {
-          return "<div class='entry'><div class='circle' style='background-color:rgb(".concat(a[1][0] * 255, ", ").concat(a[1][1] * 255, ", ").concat(a[1][2] * 255, ")'> </div> <p>").concat(a[0], "</p></div>");
+        key.style.opacity = 1.0;
+        var keyString = "\n            <div class='entries'>\n                ".concat([].concat(_toConsumableArray(Object.entries(_color_key.default).filter(function (a) {
+          return a[0] !== "Other";
+        })), _toConsumableArray(Object.entries(_color_key.default).filter(function (a) {
+          return a[0] === "Other";
+        }))).map(function (a) {
+          return "<div class='entry'><p style='color: rgb(".concat(a[1][0] * 255, ", ").concat(a[1][1] * 255, ", ").concat(a[1][2] * 255, ");'>").concat(extractAbrv(a[0]), "\n                                </p></div>");
         }).join("\n"), "\n            </div>\n                ");
         colorKeyDiv.innerHTML = keyString;
       } else {
@@ -39472,15 +39509,15 @@ d3.csv("".concat(BASE_URL, "dataset_stats.csv")).then(function (datasets) {
     var centerForceX = d3.forceX().strength(0.04);
     var centerForceY = d3.forceY().strength(0.04);
     var categoryForceX = d3.forceX(function (d) {
-      return xClusterPos(topCats.indexOf(d.agency), noOfXClusters, noOfYClusters);
+      return xToScreen(xClusterPosScreen(topCats.indexOf(d.agency), noOfXClusters, noOfYClusters, widthBuffer, topCats.indexOf(d.agency) === -1)) * window.innerWidth;
     }).strength(0.04);
     var categoryForceY = d3.forceY(function (d) {
-      return yClusterPos(topCats.indexOf(d.agency), noOfXClusters, noOfYClusters);
+      return yToScreen(yClusterPosScreen(topCats.indexOf(d.agency), noOfXClusters, noOfYClusters, heightBuffer, topCats.indexOf(d.agency) === -1)) * window.innerHeight;
     }).strength(0.04);
     var linkForce = d3.forceLink([]);
     var chargeForce = d3.forceManyBody().strength(-20);
     var simulation = d3.forceSimulation(nodes).velocityDecay(0.2).force("forceX", centerForceX).force("forceY", centerForceY).force("link", linkForce).force("collide", d3.forceCollide().strength(1).iterations(1).radius(function (d) {
-      return d.r;
+      return d.r * 0.9;
     })).stop();
     var regl = (0, _regl.default)({
       extensions: ["OES_standard_derivatives", "ANGLE_instanced_arrays"]
@@ -39505,7 +39542,7 @@ d3.csv("".concat(BASE_URL, "dataset_stats.csv")).then(function (datasets) {
       var scale = d3.scaleSqrt().domain([min, max]).range(range);
       nodes = nodes.map(function (n, i) {
         return _objectSpread({}, n, {
-          r: v ? scale(parseFloat(datasets[i][v])) : 10
+          r: v ? scale(parseFloat(datasets[i][v])) : baseRadius
         });
       });
       radiusBuffer.update(nodes.map(function (n) {
@@ -39686,7 +39723,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44913" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40849" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
